@@ -1,0 +1,47 @@
+{
+  "skill_name": "crypto-logo-to-file",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "帮我把这个币的logo存下来：https://www.coingecko.com/en/coins/usd-ai",
+      "expected_output": "识别 CHIP token (CoinGecko ID: usd-ai)，通过 /original/ 路径获取高清源图，检测背景为 has_border（金色边框），生成 4 个无描边文件到 ~/Downloads/",
+      "files": [],
+      "assertions": [
+        "Identified token symbol as CHIP from the CoinGecko page",
+        "Used /original/ path for highest resolution source (2000px+)",
+        "Dual-radius background detection classified as has_border (edge lum differs from inner)",
+        "Generated 4 files: CHIP-light.svg, CHIP-dark.svg, CHIP-light.png, CHIP-dark.png",
+        "No stroke on either light or dark version (has_border classification)",
+        "PNG edges are anti-aliased (4x supersampling, >100 unique alpha values)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "https://coinmarketcap.com/currencies/genius-terminal/ 做一下这个",
+      "expected_output": "识别 GENIUS token (CMC ID: 39841)，检测背景为纯黑（edge lum < 30），light 版无描边，dark 版白色描边贴边无黑圈",
+      "files": [],
+      "assertions": [
+        "Extracted CMC coin ID 39841 from Jina Reader scrape",
+        "Parsed symbol as GENIUS from page title",
+        "Background detected as black (edge lum < 30, no border diff)",
+        "GENIUS-light.png has no stroke",
+        "GENIUS-dark.png has white stroke flush with circle edge (no dark gap)",
+        "All files are 192x192px"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "https://coinmarketcap.com/real-world-assets/tesla/ 做一下这个",
+      "expected_output": "识别 TSLA (RWA token)，正确使用 /rwa/ 路径而非 /coins/ 路径获取 logo，检测背景为 other（红色），无描边",
+      "files": [],
+      "assertions": [
+        "Used /rwa/ image path (not /coins/) for the RWA page",
+        "Did NOT accidentally use a sidebar coin logo (e.g., Solana)",
+        "Parsed symbol as TSLA from page title",
+        "Background detected as other (lum ~89, mid-tone red)",
+        "No stroke on either version",
+        "Generated 4 files: TSLA-light.svg, TSLA-dark.svg, TSLA-light.png, TSLA-dark.png"
+      ]
+    }
+  ]
+}
